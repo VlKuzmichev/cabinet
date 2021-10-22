@@ -1,20 +1,27 @@
 package rzd.oao.zrw.nssite.cabinet.model;
 
-import org.springframework.ldap.odm.annotations.Entry;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "user_name", name = "users_unique_user_name_idx")})
 public class User extends AbstractBaseEntity {
-
+    @Column(name = "user_name", nullable = false)
     String userName;
+
+    @Column(name = "password", nullable = false)
     String password;
+
+    @Column(name = "email", nullable = false)
     String email;
+
+    @Column(name = "full_name", nullable = false)
     String fullName;
+
+    @Column(name = "boss", nullable = false)
     Boolean boss;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_group_id", nullable = false)
     UserGroup group;
 
     public User() {
@@ -27,6 +34,54 @@ public class User extends AbstractBaseEntity {
         this.email = email;
         this.fullName = fullName;
         this.boss = boss;
+        this.group = group;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Boolean getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Boolean boss) {
+        this.boss = boss;
+    }
+
+    public UserGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(UserGroup group) {
         this.group = group;
     }
 }
