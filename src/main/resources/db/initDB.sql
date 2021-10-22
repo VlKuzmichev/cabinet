@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS todos;
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_groups;
+DROP TABLE IF EXISTS user_departments;
+
 DROP SEQUENCE IF EXISTS order_seq;
 DROP SEQUENCE IF EXISTS global_seq;
 
@@ -57,17 +59,30 @@ CREATE TABLE user_groups
 -- Подразделения с одинаковым именем нет
 CREATE UNIQUE INDEX user_groups_unique_name_idx ON user_groups (name);
 
+-- Отделы / цеха
+CREATE TABLE user_departments
+(
+    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR NOT NULL, -- краткое наименование подразделения
+    full_name VARCHAR NULL -- полное наименование подразделения
+);
+-- Отдела с одинаковым кратким и полным наименованием нет
+CREATE UNIQUE INDEX user_departments_unique_name_idx ON user_departments (name);
+CREATE UNIQUE INDEX user_departments_unique_full_name_idx ON user_departments (full_name);
+
 -- Пользователи(авторизация в системе)
 CREATE TABLE users
 (
     id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    user_name     VARCHAR NOT NULL,
-    password      VARCHAR NOT NULL,
-    email         VARCHAR NOT NULL,
-    full_name     VARCHAR NOT NULL,
+    user_name     VARCHAR NOT NULL, -- логин
+    password      VARCHAR NOT NULL, -- пароль
+    email         VARCHAR NOT NULL, -- адрес эл. почты
+    full_name     VARCHAR NOT NULL, -- ФИО
     boss BOOLEAN NOT NULL, -- право издавать поручения BOOLEAN
     user_group_id INTEGER NOT NULL, -- поле таблицы user_groups
-    FOREIGN KEY (user_group_id) REFERENCES user_groups (id) ON DELETE CASCADE
+    user_department_id INTEGER NOT NULL, -- поле таблицы user_groups
+    FOREIGN KEY (user_group_id) REFERENCES user_groups (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_department_id) REFERENCES user_departments (id) ON DELETE CASCADE
 );
 -- Пользователей с одинаковым логином нет
 CREATE UNIQUE INDEX users_unique_user_name_idx ON users (user_name);

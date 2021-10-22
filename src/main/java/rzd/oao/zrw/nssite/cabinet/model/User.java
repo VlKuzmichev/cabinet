@@ -1,6 +1,8 @@
 package rzd.oao.zrw.nssite.cabinet.model;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "user_name", name = "users_unique_user_name_idx")})
@@ -24,10 +26,16 @@ public class User extends AbstractBaseEntity {
     @JoinColumn(name = "user_group_id", nullable = false)
     UserGroup group;
 
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+
     public User() {
     }
 
-    public User(Integer id, String userName, String password, String email, String fullName, Boolean boss, UserGroup group) {
+    public User(Integer id, String userName, String password, String email, String fullName, Boolean boss, UserGroup group, Collection<Role> roles) {
         super(id);
         this.userName = userName;
         this.password = password;
@@ -83,5 +91,13 @@ public class User extends AbstractBaseEntity {
 
     public void setGroup(UserGroup group) {
         this.group = group;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
