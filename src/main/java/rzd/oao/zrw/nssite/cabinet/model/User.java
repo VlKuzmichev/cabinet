@@ -26,6 +26,10 @@ public class User extends AbstractBaseEntity {
     @JoinColumn(name = "user_group_id", nullable = false)
     UserGroup group;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_department_id", nullable = false)
+    UserDepartment department;
+
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -35,7 +39,7 @@ public class User extends AbstractBaseEntity {
     public User() {
     }
 
-    public User(Integer id, String userName, String password, String email, String fullName, Boolean boss, UserGroup group, Collection<Role> roles) {
+    public User(Integer id, String userName, String password, String email, String fullName, Boolean boss, UserGroup group, UserDepartment department, Collection<Role> roles) {
         super(id);
         this.userName = userName;
         this.password = password;

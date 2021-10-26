@@ -17,35 +17,35 @@ CREATE SEQUENCE order_seq START WITH 100;
 -- пользователи ознакамливаются вручную
 CREATE TABLE orders
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    number INTEGER NOT NULL DEFAULT nextval('order_seq'),
-    date_time TIMESTAMP NOT NULL, -- время создания
-    name VARCHAR NOT NULL, -- заголовок поручения
-    description TEXT NOT NULL -- текст поручения
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    number      INTEGER   NOT NULL  DEFAULT nextval('order_seq'),
+    date_time   TIMESTAMP NOT NULL, -- время создания
+    name        VARCHAR   NOT NULL, -- заголовок поручения
+    description TEXT      NOT NULL  -- текст поручения
 );
 CREATE UNIQUE INDEX orders_unique_number_idx ON orders (number);
 
 -- Задания
 CREATE TABLE todos
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time TIMESTAMP NOT NULL, -- время создания
-    end_date TIMESTAMP NOT NULL, -- deadline
-    name VARCHAR NOT NULL, -- заголовок задания
-    description VARCHAR NOT NULL, -- текст задания
-    checked BOOLEAN NOT NULL -- отметка о выполнении
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date_time   TIMESTAMP NOT NULL, -- время создания
+    end_date    TIMESTAMP NOT NULL, -- deadline
+    name        VARCHAR   NOT NULL, -- заголовок задания
+    description VARCHAR   NOT NULL, -- текст задания
+    checked     BOOLEAN   NOT NULL  -- отметка о выполнении
 );
 
 -- Подзадания в заданиях
 CREATE TABLE sub_todos
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time TIMESTAMP NOT NULL, -- время создания
-    end_date TIMESTAMP NOT NULL, -- deadline
-    name VARCHAR NOT NULL, -- заголовок подзадания
-    description VARCHAR NOT NULL, -- текст подзадания
-    checked BOOLEAN NOT NULL, -- отметак о выполнении
-    todo_id INTEGER NOT NULL, -- связь с таблицей todos(1 ко М)
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date_time   TIMESTAMP NOT NULL, -- время создания
+    end_date    TIMESTAMP NOT NULL, -- deadline
+    name        VARCHAR   NOT NULL, -- заголовок подзадания
+    description VARCHAR   NOT NULL, -- текст подзадания
+    checked     BOOLEAN   NOT NULL, -- отметак о выполнении
+    todo_id     INTEGER   NOT NULL, -- связь с таблицей todos(1 ко М)
     FOREIGN KEY (todo_id) REFERENCES todos (id) ON DELETE CASCADE
 );
 
@@ -62,9 +62,9 @@ CREATE UNIQUE INDEX user_groups_unique_name_idx ON user_groups (name);
 -- Отделы / цеха
 CREATE TABLE user_departments
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name VARCHAR NOT NULL, -- краткое наименование подразделения
-    full_name VARCHAR NULL -- полное наименование подразделения
+    id        INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name      VARCHAR NOT NULL, -- краткое наименование подразделения
+    full_name VARCHAR NULL      -- полное наименование подразделения
 );
 -- Отдела с одинаковым кратким и полным наименованием нет
 CREATE UNIQUE INDEX user_departments_unique_name_idx ON user_departments (name);
@@ -73,13 +73,13 @@ CREATE UNIQUE INDEX user_departments_unique_full_name_idx ON user_departments (f
 -- Пользователи(авторизация в системе)
 CREATE TABLE users
 (
-    id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    user_name     VARCHAR NOT NULL, -- логин
-    password      VARCHAR NOT NULL, -- пароль
-    email         VARCHAR NOT NULL, -- адрес эл. почты
-    full_name     VARCHAR NOT NULL, -- ФИО
-    boss BOOLEAN NOT NULL, -- право издавать поручения BOOLEAN
-    user_group_id INTEGER NOT NULL, -- поле таблицы user_groups
+    id                 INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    user_name          VARCHAR NOT NULL, -- логин
+    password           VARCHAR NOT NULL, -- пароль
+    email              VARCHAR NOT NULL, -- адрес эл. почты
+    full_name          VARCHAR NOT NULL, -- ФИО
+    boss               BOOLEAN DEFAULT false NOT NULL, -- право издавать поручения BOOLEAN
+    user_group_id      INTEGER NOT NULL, -- поле таблицы user_groups
     user_department_id INTEGER NOT NULL, -- поле таблицы user_groups
     FOREIGN KEY (user_group_id) REFERENCES user_groups (id) ON DELETE CASCADE,
     FOREIGN KEY (user_department_id) REFERENCES user_departments (id) ON DELETE CASCADE
@@ -95,12 +95,11 @@ CREATE TABLE user_roles
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE orders_users
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id       INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     order_id INTEGER NOT NULL, -- связь с таблицей orders
-    user_id INTEGER NOT NULL, -- связь с таблицей users
+    user_id  INTEGER NOT NULL, -- связь с таблицей users
     FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

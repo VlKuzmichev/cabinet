@@ -35,4 +35,9 @@ public class UserRepositoryImpl implements UserRepository{
     public List<User> getAll() {
         return repository.findAll(SORT_NAME);
     }
+
+    @Override
+    public User getByName(String name) {
+        return repository.getByUserName(name);
+    }
 }
