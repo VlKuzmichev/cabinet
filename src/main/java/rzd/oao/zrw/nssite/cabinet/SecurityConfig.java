@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import rzd.oao.zrw.nssite.cabinet.repository.UserRepository;
 import rzd.oao.zrw.nssite.cabinet.service.UserService;
@@ -35,12 +36,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 //  .formLogin()//.permitAll()
                 .and()
                 .logout().permitAll();
+        http.cors();
+        http.csrf().disable();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080")
+//                .allowedOrigins("*")
+                .allowedMethods("*");
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

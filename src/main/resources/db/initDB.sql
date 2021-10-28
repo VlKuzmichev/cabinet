@@ -25,30 +25,6 @@ CREATE TABLE orders
 );
 CREATE UNIQUE INDEX orders_unique_number_idx ON orders (number);
 
--- Задания
-CREATE TABLE todos
-(
-    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time   TIMESTAMP NOT NULL, -- время создания
-    end_date    TIMESTAMP NOT NULL, -- deadline
-    name        VARCHAR   NOT NULL, -- заголовок задания
-    description VARCHAR   NOT NULL, -- текст задания
-    checked     BOOLEAN   NOT NULL  -- отметка о выполнении
-);
-
--- Подзадания в заданиях
-CREATE TABLE sub_todos
-(
-    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time   TIMESTAMP NOT NULL, -- время создания
-    end_date    TIMESTAMP NOT NULL, -- deadline
-    name        VARCHAR   NOT NULL, -- заголовок подзадания
-    description VARCHAR   NOT NULL, -- текст подзадания
-    checked     BOOLEAN   NOT NULL, -- отметак о выполнении
-    todo_id     INTEGER   NOT NULL, -- связь с таблицей todos(1 ко М)
-    FOREIGN KEY (todo_id) REFERENCES todos (id) ON DELETE CASCADE
-);
-
 
 -- Подразделения (РЦС 1,2,3, НС)
 CREATE TABLE user_groups
@@ -78,7 +54,7 @@ CREATE TABLE users
     password           VARCHAR NOT NULL, -- пароль
     email              VARCHAR NOT NULL, -- адрес эл. почты
     full_name          VARCHAR NOT NULL, -- ФИО
-    boss               BOOLEAN DEFAULT false NOT NULL, -- право издавать поручения BOOLEAN
+    boss               BOOLEAN NOT NULL, -- право издавать поручения BOOLEAN
     user_group_id      INTEGER NOT NULL, -- поле таблицы user_groups
     user_department_id INTEGER NOT NULL, -- поле таблицы user_groups
     FOREIGN KEY (user_group_id) REFERENCES user_groups (id) ON DELETE CASCADE,
@@ -87,6 +63,7 @@ CREATE TABLE users
 -- Пользователей с одинаковым логином нет
 CREATE UNIQUE INDEX users_unique_user_name_idx ON users (user_name);
 
+-- Таблица связь пользователей и ролей(many to many)
 CREATE TABLE user_roles
 (
     user_id INTEGER NOT NULL,
@@ -95,6 +72,7 @@ CREATE TABLE user_roles
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+-- Поручения
 CREATE TABLE orders_users
 (
     id       INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -103,5 +81,32 @@ CREATE TABLE orders_users
     FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
 -- Ограничение только одно конкретное поручение у конкретного пользователя
 CREATE UNIQUE INDEX orders_users_unique_order_id_user_id_idx ON orders_users (order_id, user_id);
+
+-- Задачи
+CREATE TABLE todos
+(
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date_time   TIMESTAMP NOT NULL, -- время создания
+    end_date    TIMESTAMP NOT NULL, -- deadline
+    name        VARCHAR   NOT NULL, -- заголовок задания
+    description VARCHAR   NULL,     -- текст задания
+    checked     BOOLEAN   NOT NULL, -- отметка о выполнении
+    user_id     INTEGER   NOT NULL, -- связь с таблицей users
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+-- Подзадчи в задачах
+CREATE TABLE sub_todos
+(
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date_time   TIMESTAMP NOT NULL, -- время создания
+    end_date    TIMESTAMP NOT NULL, -- deadline
+    name        VARCHAR   NOT NULL, -- заголовок подзадания
+    description VARCHAR   NULL, -- текст подзадания
+    checked     BOOLEAN   NOT NULL, -- отметак о выполнении
+    todo_id     INTEGER   NOT NULL, -- связь с таблицей todos(1 ко М)
+    FOREIGN KEY (todo_id) REFERENCES todos (id) ON DELETE CASCADE
+);

@@ -11,15 +11,12 @@ import rzd.oao.zrw.nssite.cabinet.model.User;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional(readOnly = true)
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
-    @Transactional
     @Modifying
     @Query("DELETE FROM User u WHERE u.id=:id")
     int delete(@Param("id") int id);
 
     @Override
-    @Transactional
     User save(User user);
 
     @Override
