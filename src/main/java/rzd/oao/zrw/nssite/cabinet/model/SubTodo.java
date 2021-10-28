@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sub_todos")
 public class SubTodo extends AbstractNamedEntity {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "todo_id", nullable = false)
     private Todo todo;
 
