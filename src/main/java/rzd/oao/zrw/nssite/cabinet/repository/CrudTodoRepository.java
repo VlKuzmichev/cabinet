@@ -24,5 +24,5 @@ public interface CrudTodoRepository extends JpaRepository<Todo, Integer> {
     @Override
     List<Todo> findAll(Sort sort);
 
-    Todo getByTodoName(String name);
+    Todo getByName(String name);
 }

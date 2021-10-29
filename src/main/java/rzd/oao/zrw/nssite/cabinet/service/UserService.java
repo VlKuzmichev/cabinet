@@ -4,6 +4,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.User;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
     public User create(User user);
 
@@ -15,7 +17,7 @@ public interface UserService extends UserDetailsService {
 
     void update(User user);
 
-//    List<User> getAll();
+    List<User> getAll();
 
 //    List<User> getAllByDepartment(int departmentId);
 

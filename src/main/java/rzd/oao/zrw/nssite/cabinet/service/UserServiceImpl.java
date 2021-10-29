@@ -12,6 +12,8 @@ import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.User;
 import rzd.oao.zrw.nssite.cabinet.repository.UserRepository;
 
+import java.util.List;
+
 
 //@Transactional(readOnly = true) если будет необходимо
 @Service("userService")
@@ -56,6 +58,12 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
 
     }
+
+    @Override
+    public List<User> getAll() {
+        return null;
+    }
+
 
     @Override
     public AuthorizedUser loadUserByUsername(String name) throws UsernameNotFoundException {

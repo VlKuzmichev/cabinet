@@ -36,6 +36,6 @@ public class TodoRepositoryImpl implements TodoRepository{
 
     @Override
     public Todo getByName(String name) {
-        return repository.getByTodoName(name);
+        return repository.getByName(name);
     }
 }

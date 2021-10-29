@@ -1,5 +1,7 @@
 package rzd.oao.zrw.nssite.cabinet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -23,10 +25,12 @@ public class User extends AbstractBaseEntity {
     @Column(name = "boss", nullable = false)
     Boolean boss;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_group_id", nullable = false)
     UserGroup group;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_department_id", nullable = false)
     UserDepartment department;
@@ -36,6 +40,7 @@ public class User extends AbstractBaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Todo> todos;
 
@@ -106,5 +111,18 @@ public class User extends AbstractBaseEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", boss=" + boss +
+                ", roles=" + roles +
+                '}';
     }
 }

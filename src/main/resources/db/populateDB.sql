@@ -22,7 +22,7 @@ VALUES ('КИП Могоча'),
        ('ЛАЗ Шилка');
 
 INSERT INTO users (user_name, password, email, full_name, boss, user_group_id, user_department_id)
-VALUES ('user', '{noop}password', 'usersv@yandex.ru', 'Ivanov Ivan Ivanovich', true, 100000, 100004);
+VALUES ('user', '$2a$12$umiAUHsIK9xFm6BYTtoHq.6esFnXeEilc23rij/aWI9nVPMwEauOS', 'usersv@yandex.ru', 'Ivanov Ivan Ivanovich', true, 100000, 100004);
 
 INSERT INTO todos (date_time, end_date, name, description, checked, user_id)
 VALUES ('2021-12-28 10:00:00', '2021-12-28 17:00:00', 'Провести учения по пожарной безопасности',
