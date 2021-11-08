@@ -18,8 +18,8 @@ import java.util.List;
 //@Transactional(readOnly = true) если будет необходимо
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    //    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+//    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final PasswordEncoder passwordEncoder;
 
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(int id) throws NotFoundException {
-//        logger.info("Get User with Id: {}", id);
+        logger.info("Get User with Id: {}", id);
         logger.trace("Method 1 started with argument={}", id);
         logger.debug("Database updated with script = {}", id);
         logger.info("Application has started on port = {}", id);

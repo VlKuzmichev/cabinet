@@ -17,7 +17,7 @@ import java.util.List;
 //@Transactional(readOnly = true) если будет необходимо
 @Service("todoService")
 public class TodoServiceImpl implements TodoService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(TodoServiceImpl.class);
 
     private TodoRepository repository;
 
@@ -29,28 +29,32 @@ public class TodoServiceImpl implements TodoService {
 //    @Transactional(isolation = Isolation.READ_COMMITTED) По умолчанию
     @Transactional
     public Todo create(Todo todo) {
+        logger.debug("Create todo: {}", todo);
         return null;
     }
 
     @Transactional
     @Override
     public void delete(int id) throws NotFoundException {
+        logger.debug("Delete todo with Id: {}", id);
 
     }
 
     @Override
     public Todo get(int id) throws NotFoundException {
-//        logger.info("Get todo with Id: {}", id);
+        logger.debug("Get todo with Id: {}", id);
         return repository.get(id);
     }
 
     @Override
     public void update(Todo todo) {
+        logger.debug("Update todo: {}", todo);
 
     }
 
     @Override
     public List<Todo> getAll() {
+        logger.debug("Get all todos");
         return repository.getAll();
     }
 

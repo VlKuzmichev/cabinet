@@ -89,8 +89,8 @@ CREATE UNIQUE INDEX orders_users_unique_order_id_user_id_idx ON orders_users (or
 CREATE TABLE todos
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time   TIMESTAMP NOT NULL, -- время создания
-    end_date    TIMESTAMP NOT NULL, -- deadline
+    date_time   TIMESTAMP NOT NULL, -- deadline
+--     end_date    TIMESTAMP NOT NULL, -- deadline
     name        VARCHAR   NOT NULL, -- заголовок задания
     description VARCHAR   NULL,     -- текст задания
     checked     BOOLEAN   NOT NULL, -- отметка о выполнении
@@ -102,11 +102,11 @@ CREATE TABLE todos
 CREATE TABLE sub_todos
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    date_time   TIMESTAMP NOT NULL, -- время создания
-    end_date    TIMESTAMP NOT NULL, -- deadline
+    date_time   TIMESTAMP NOT NULL, -- deadline
+--     end_date    TIMESTAMP NOT NULL, -- deadline
     name        VARCHAR   NOT NULL, -- заголовок подзадания
     description VARCHAR   NULL, -- текст подзадания
-    checked     BOOLEAN   NOT NULL, -- отметак о выполнении
+    checked     BOOLEAN   NOT NULL, -- отметка о выполнении
     todo_id     INTEGER   NOT NULL, -- связь с таблицей todos(1 ко М)
     FOREIGN KEY (todo_id) REFERENCES todos (id) ON DELETE CASCADE
 );
