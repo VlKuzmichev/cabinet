@@ -2,11 +2,8 @@ package rzd.oao.zrw.nssite.cabinet.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import rzd.oao.zrw.nssite.cabinet.AuthorizedUser;
 import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
 import rzd.oao.zrw.nssite.cabinet.repository.TodoRepository;
@@ -37,7 +34,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void delete(int id) throws NotFoundException {
         logger.debug("Delete todo with Id: {}", id);
-
+        repository.delete(id);
     }
 
     @Override
@@ -48,8 +45,9 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void update(Todo todo) {
-        logger.debug("Update todo: {}", todo);
-
+        logger.info("Update todo: {}", todo);
+        Todo updatedTodo = todo;
+        repository.save(todo);
     }
 
     @Override

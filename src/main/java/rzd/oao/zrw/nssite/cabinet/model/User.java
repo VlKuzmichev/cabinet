@@ -13,6 +13,7 @@ public class User extends AbstractBaseEntity {
     @Column(name = "user_name", nullable = false)
     String userName;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     String password;
 

@@ -12,16 +12,8 @@ public interface TodoService {
 
     Todo get(int id) throws NotFoundException;
 
-    //void update(Todo todo, int id);
-
     void update(Todo todo);
 
     List<Todo> getAll();
-
-//    List<User> getAllByDepartment(int departmentId);
-
-//    User getWithDepartment(int id) throws NotFoundException;
-
-//    void enable(int id, boolean enable);
 
 }

@@ -1,10 +1,10 @@
 package rzd.oao.zrw.nssite.cabinet.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "todos")
@@ -18,24 +18,17 @@ public class Todo extends AbstractNamedEntity {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo")
-    @JsonIgnore
-    private List<SubTodo> subTodos;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo")
+//    @JsonIgnore
+//    private List<SubTodo> subTodos;
 
     public Todo() {
     }
-
-//    public Todo(LocalDateTime dateTime, LocalDateTime endDate, String description, User user) {
-//        this.dateTime = dateTime;
-//        this.endDate = endDate;
-//        this.description = description;
-//        this.user = user;
-//    }
 
     public Todo(Integer id, String name, LocalDateTime dateTime, String description, User user) {
         super(id, name);
@@ -68,13 +61,13 @@ public class Todo extends AbstractNamedEntity {
         this.user = user;
     }
 
-    public List<SubTodo> getSubTodos() {
-        return subTodos;
-    }
-
-    public void setSubTodos(List<SubTodo> subTodos) {
-        this.subTodos = subTodos;
-    }
+//    public List<SubTodo> getSubTodos() {
+//        return subTodos;
+//    }
+//
+//    public void setSubTodos(List<SubTodo> subTodos) {
+//        this.subTodos = subTodos;
+//    }
 
     @Override
     public String toString() {
