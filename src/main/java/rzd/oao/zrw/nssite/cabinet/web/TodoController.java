@@ -2,11 +2,15 @@ package rzd.oao.zrw.nssite.cabinet.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import rzd.oao.zrw.nssite.cabinet.AuthorizedUser;
 import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
 import rzd.oao.zrw.nssite.cabinet.service.TodoService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,6 +39,15 @@ public class TodoController {
     public void update(@RequestBody Todo todo, @PathVariable int id) {
         // Id проверить в сервисе AssureIdConsist
         todoService.update(todo);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Todo> createWithLocation(@RequestBody Todo todo) {
+        Todo created = todoService.create(todo);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/todo/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @DeleteMapping("/{id}")

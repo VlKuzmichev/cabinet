@@ -93,7 +93,7 @@ CREATE TABLE todos
 --     end_date    TIMESTAMP NOT NULL, -- deadline
     name        VARCHAR   NOT NULL, -- заголовок задания
     description VARCHAR   NULL,     -- текст задания
-    checked     BOOLEAN   NOT NULL, -- отметка о выполнении
+    checked     BOOLEAN   NOT NULL default false, -- отметка о выполнении
     user_id     INTEGER   NOT NULL, -- связь с таблицей users
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

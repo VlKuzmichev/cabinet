@@ -2,12 +2,17 @@ package rzd.oao.zrw.nssite.cabinet.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
+import rzd.oao.zrw.nssite.cabinet.model.User;
 import rzd.oao.zrw.nssite.cabinet.repository.TodoRepository;
+import rzd.oao.zrw.nssite.cabinet.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -17,9 +22,11 @@ public class TodoServiceImpl implements TodoService {
     private static final Logger logger = LoggerFactory.getLogger(TodoServiceImpl.class);
 
     private TodoRepository repository;
+    private UserRepository userRepository;
 
-    public TodoServiceImpl(TodoRepository repository) {
+    public TodoServiceImpl(TodoRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -27,7 +34,11 @@ public class TodoServiceImpl implements TodoService {
     @Transactional
     public Todo create(Todo todo) {
         logger.debug("Create todo: {}", todo);
-        return null;
+        Assert.notNull(todo, "todo must not be null");
+        // Get username from spring security and get by name from repo
+        User addUser = userRepository.getByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        todo.setUser(addUser);
+        return repository.save(todo);
     }
 
     @Transactional
