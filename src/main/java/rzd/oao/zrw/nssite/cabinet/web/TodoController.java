@@ -1,5 +1,9 @@
 package rzd.oao.zrw.nssite.cabinet.web;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,7 @@ import rzd.oao.zrw.nssite.cabinet.model.Todo;
 import rzd.oao.zrw.nssite.cabinet.service.TodoService;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,6 +33,14 @@ public class TodoController {
         return todoService.get(id);
     }
 
+    @PostMapping("/{pageNumber}/{pageSize}")
+    public Page<Todo> getTodosByDatePage(@PathVariable("pageNumber") final Integer pageNumber, @PathVariable("pageSize") final Integer pageSize,
+                                         @RequestBody @DateTimeFormat(pattern="yyyy-MM-dd") String date) {
+        date = date.replace("%3A", ":").replace("Z=", "0");
+        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize);
+        Page<Todo> pages = todoService.getTodosByDate(pageOfTodos, LocalDateTime.parse(date));
+        return pages;
+    }
     @GetMapping()
     //@CrossOrigin(origins = "http://localhost:8080")
     public List<Todo> todos() {

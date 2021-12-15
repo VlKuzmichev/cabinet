@@ -1,8 +1,11 @@
 package rzd.oao.zrw.nssite.cabinet.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -32,6 +35,11 @@ public class TodoRepositoryImpl implements TodoRepository{
     @Override
     public List<Todo> getAll() {
         return repository.findAll(/*SORT_NAME*/);
+    }
+
+    @Override
+    public Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime) {
+        return repository.findAllTodosByDate(pageable, dateTime);
     }
 
     @Override
