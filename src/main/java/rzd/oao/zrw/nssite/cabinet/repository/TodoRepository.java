@@ -16,7 +16,8 @@ public interface TodoRepository {
     // null if not found
     Todo get(int id);
 
-    List<Todo> getAll();
+//    List<Todo> getAll();
+    Page<Todo> getAll(Pageable pageable);
 
     Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime);
 

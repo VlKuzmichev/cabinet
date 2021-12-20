@@ -17,7 +17,8 @@ public interface TodoService {
 
     void update(Todo todo);
 
-    List<Todo> getAll();
+    //    List<Todo> getAll();
+    Page<Todo> getAll(Pageable pageable);
 
     Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime);
 

@@ -24,8 +24,11 @@ public interface CrudTodoRepository extends JpaRepository<Todo, Integer> {
     @Override
     Optional<Todo> findById(Integer id);
 
-    @Override
-    List<Todo> findAll(Sort sort);
+    //    @Override
+//    List<Todo> findAll(Sort sort);
+    @Query(value = "select * from todos", nativeQuery = true)
+    Page<Todo> findAllTodos(Pageable pageable);
+
 
     @Query(value = "select * from todos where date_time = :dateTime", nativeQuery = true)
     Page<Todo> findAllTodosByDate(Pageable pageable, LocalDateTime dateTime);

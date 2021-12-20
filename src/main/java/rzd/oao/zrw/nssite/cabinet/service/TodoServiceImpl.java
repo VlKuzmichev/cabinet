@@ -63,10 +63,15 @@ public class TodoServiceImpl implements TodoService {
         repository.save(todo);
     }
 
+//    @Override
+//    public List<Todo> getAll() {
+//        logger.debug("Get all todos");
+//        return repository.getAll();
+//    }
     @Override
-    public List<Todo> getAll() {
+    public Page<Todo> getAll(Pageable pageable) {
         logger.debug("Get all todos");
-        return repository.getAll();
+        return repository.getAll(pageable);
     }
 
     @Override

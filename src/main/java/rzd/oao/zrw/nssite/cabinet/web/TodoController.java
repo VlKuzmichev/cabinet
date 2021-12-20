@@ -41,10 +41,13 @@ public class TodoController {
         Page<Todo> pages = todoService.getTodosByDate(pageOfTodos, LocalDateTime.parse(date));
         return pages;
     }
-    @GetMapping()
+
+    @GetMapping("/{pageNumber}/{pageSize}")
     //@CrossOrigin(origins = "http://localhost:8080")
-    public List<Todo> todos() {
-        return todoService.getAll();
+    public Page<Todo> todos(@PathVariable("pageNumber") final Integer pageNumber, @PathVariable("pageSize") final Integer pageSize) {
+        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize);
+        Page<Todo> pages = todoService.getAll(pageOfTodos);
+        return pages;
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
