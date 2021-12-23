@@ -32,18 +32,14 @@ public class TodoRepositoryImpl implements TodoRepository{
         return repository.findById(id).orElse(null);
     }
 
-//    @Override
-//    public List<Todo> getAll() {
-//        return repository.findAll(/*SORT_NAME*/);
-//    }
     @Override
-    public Page<Todo> getAll(Pageable pageable) {
-        return repository.findAllTodos(pageable);
+    public Page<Todo> getAll(Pageable pageable, boolean checked) {
+        return repository.findAllTodos(pageable, checked);
     }
 
     @Override
-    public Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime) {
-        return repository.findAllTodosByDate(pageable, dateTime);
+    public Page<Todo> getTodosByDate(Pageable pageable, boolean checked, LocalDateTime dateTime) {
+        return repository.findAllTodosByDate(pageable, checked, dateTime);
     }
 
     @Override

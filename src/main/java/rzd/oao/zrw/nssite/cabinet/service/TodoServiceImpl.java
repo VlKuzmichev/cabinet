@@ -15,7 +15,6 @@ import rzd.oao.zrw.nssite.cabinet.repository.TodoRepository;
 import rzd.oao.zrw.nssite.cabinet.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 //@Transactional(readOnly = true) если будет необходимо
@@ -56,6 +55,20 @@ public class TodoServiceImpl implements TodoService {
         return repository.get(id);
     }
 
+    @Transactional
+    @Override
+    public Todo complete(int id, boolean checked) throws NotFoundException {
+        boolean checkedTodo = true;
+        Todo todo = repository.get(id);
+        if (!todo.getChecked()) {
+            todo.setChecked(true);
+        } else {
+            todo.setChecked(false);
+        }
+        logger.debug("Set todo checked with Id: {}", id);
+        return repository.save(todo);
+    }
+
     @Override
     public void update(Todo todo) {
         logger.info("Update todo: {}", todo);
@@ -63,19 +76,14 @@ public class TodoServiceImpl implements TodoService {
         repository.save(todo);
     }
 
-//    @Override
-//    public List<Todo> getAll() {
-//        logger.debug("Get all todos");
-//        return repository.getAll();
-//    }
     @Override
-    public Page<Todo> getAll(Pageable pageable) {
+    public Page<Todo> getAll(Pageable pageable, boolean checked) {
         logger.debug("Get all todos");
-        return repository.getAll(pageable);
+        return repository.getAll(pageable, checked);
     }
 
     @Override
-    public Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime) {
-        return repository.getTodosByDate(pageable, dateTime);
+    public Page<Todo> getTodosByDate(Pageable pageable, boolean checked, LocalDateTime dateTime) {
+        return repository.getTodosByDate(pageable, checked, dateTime);
     }
 }

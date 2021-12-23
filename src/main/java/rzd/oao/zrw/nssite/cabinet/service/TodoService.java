@@ -6,20 +6,20 @@ import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface TodoService {
-    public Todo create(Todo todo);
+    Todo create(Todo todo);
 
     void delete(int id) throws NotFoundException;
 
     Todo get(int id) throws NotFoundException;
 
+    Todo complete(int id, boolean checked) throws NotFoundException;
+
     void update(Todo todo);
 
-    //    List<Todo> getAll();
-    Page<Todo> getAll(Pageable pageable);
+    Page<Todo> getAll(Pageable pageable, boolean checked);
 
-    Page<Todo> getTodosByDate(Pageable pageable, LocalDateTime dateTime);
+    Page<Todo> getTodosByDate(Pageable pageable, boolean checked, LocalDateTime dateTime);
 
 }

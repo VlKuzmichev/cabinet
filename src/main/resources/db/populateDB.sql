@@ -25,10 +25,10 @@ INSERT INTO users (user_name, password, email, full_name, boss, user_group_id, u
 VALUES ('user', '$2a$12$umiAUHsIK9xFm6BYTtoHq.6esFnXeEilc23rij/aWI9nVPMwEauOS', 'usersv@yandex.ru', 'Ivanov Ivan Ivanovich', true, 100000, 100004);
 
 INSERT INTO todos (date_time, name, description, checked, user_id)
-VALUES ('2021-12-28 10:00:00', 'Провести учения по пожарной безопасности',
+VALUES ('2021-12-28 00:00:00', 'Провести учения по пожарной безопасности',
         'Согласно распоряжения главного инженера провести учения по пожарной безопасности с использованием спецодежды и огнетушителя',
         false, 100007),
-       ('2021-12-29 7:00:00', 'Проверить состояние опоры по улице Ленина',
+       ('2021-12-22 00:00:00', 'Проверить состояние опоры по улице Ленина',
         NULL,
         false, 100007);
 

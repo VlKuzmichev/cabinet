@@ -18,6 +18,9 @@ public class Todo extends AbstractNamedEntity {
     @Column(name = "description", nullable = true)
     private String description;
 
+    @Column(name = "checked", nullable = false)
+    private Boolean checked;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -51,6 +54,14 @@ public class Todo extends AbstractNamedEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 
     public User getUser() {

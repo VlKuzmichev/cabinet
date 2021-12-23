@@ -3,20 +3,19 @@ package rzd.oao.zrw.nssite.cabinet.web;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import rzd.oao.zrw.nssite.cabinet.AuthorizedUser;
 import rzd.oao.zrw.nssite.cabinet.model.NotFoundException;
 import rzd.oao.zrw.nssite.cabinet.model.Todo;
 import rzd.oao.zrw.nssite.cabinet.service.TodoService;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/todos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,25 +27,34 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    @GetMapping("/{id}/completed/{completed}")
+    public Todo complete(@PathVariable int id, @PathVariable boolean completed) throws NotFoundException {
+//        boolean cmpl = completed;
+//        System.out.println("comp");
+        return todoService.complete(id, completed);
+    }
+
     @GetMapping("/{id}")
     public Todo get(@PathVariable int id) throws NotFoundException {
+//        System.out.println("get");
         return todoService.get(id);
     }
 
-    @PostMapping("/{pageNumber}/{pageSize}")
+    @PostMapping("/{pageNumber}/{pageSize}/{checked}")
     public Page<Todo> getTodosByDatePage(@PathVariable("pageNumber") final Integer pageNumber, @PathVariable("pageSize") final Integer pageSize,
-                                         @RequestBody @DateTimeFormat(pattern="yyyy-MM-dd") String date) {
+                                         @PathVariable("checked") final boolean checked, @RequestBody String date) {
         date = date.replace("%3A", ":").replace("Z=", "0");
-        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize);
-        Page<Todo> pages = todoService.getTodosByDate(pageOfTodos, LocalDateTime.parse(date));
+        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize, Sort.by("id").ascending());
+        Page<Todo> pages = todoService.getTodosByDate(pageOfTodos, checked, LocalDateTime.parse(date));
         return pages;
     }
 
-    @GetMapping("/{pageNumber}/{pageSize}")
+    @GetMapping("/{pageNumber}/{pageSize}/{checked}")
     //@CrossOrigin(origins = "http://localhost:8080")
-    public Page<Todo> todos(@PathVariable("pageNumber") final Integer pageNumber, @PathVariable("pageSize") final Integer pageSize) {
-        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize);
-        Page<Todo> pages = todoService.getAll(pageOfTodos);
+    public Page<Todo> todos(@PathVariable("pageNumber") final Integer pageNumber, @PathVariable("pageSize") final Integer pageSize,
+                            @PathVariable("checked") final boolean checked) {
+        Pageable pageOfTodos = PageRequest.of(pageNumber, pageSize, Sort.by("id").ascending());
+        Page<Todo> pages = todoService.getAll(pageOfTodos, checked);
         return pages;
     }
 
