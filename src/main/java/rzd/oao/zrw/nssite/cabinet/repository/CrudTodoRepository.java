@@ -24,7 +24,7 @@ public interface CrudTodoRepository extends JpaRepository<Todo, Integer> {
     @Override
     Optional<Todo> findById(Integer id);
 
-    @Query(value = "select * from todos where checked = :checked", nativeQuery = true)
+    @Query(value = "select * from todos where checked = :checked ORDER BY date_time", nativeQuery = true)
     Page<Todo> findAllTodos(Pageable pageable, boolean checked);
 
     @Query(value = "select * from todos where date_time = :dateTime AND checked = :checked", nativeQuery = true)
